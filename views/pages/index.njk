@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quadrillage Background - Design Époustouflant</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+<body class="min-h-screen">
+  
+  <!-- Exemple 1: Quadrillage classique avec Tailwind -->
+  <section class="min-h-screen bg-gradient-to-r from-green-eid-dark to-green-eid-light  grid-bg-1 flex items-center justify-center">
+    <div class="text-center text-white p-8">
+      <h1 class="text-5xl font-bold mb-4">Quadrillage Classique</h1>
+      <p class="text-xl text-gray-300 mb-8">Background avec lignes de grille subtiles</p>
+      <button class="bg-accent hover:bg-accent-hover text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+        Découvrir
+      </button>
+    </div>
+  </section>
+
+
+
+  <script>
+    // Effet de parallaxe subtil sur le scroll
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const parallax = document.querySelectorAll('.grid-animated');
+      
+      parallax.forEach(element => {
+        const speed = 0.1;
+        const yPos = -(scrolled * speed);
+        element.style.backgroundPosition = `0 ${yPos}px`;
+      });
+    });
+  </script>
+</body>
+</html>
