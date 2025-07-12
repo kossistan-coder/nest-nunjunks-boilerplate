@@ -1,6 +1,82 @@
+
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+.system-input{
+  @apply block w-full rounded-lg border bg-primary focus:text-white border-primary px-3 py-3 leading-6  focus:border-secondary focus:outline-none
+}
+
+.search-input{
+  @apply block w-full rounded-lg border bg-primary focus:text-white border-primary px-12 py-3 leading-6  focus:border-secondary focus:outline-none
+}
+
+.system-input-error {
+  @apply text-xs mt-1 opacity-80 text-red-600
+}
+
+
+.menu-scroll {
+  overflow: scroll;
+  scrollbar-width: none; /* Pour Firefox */
+}
+
+.menu-scroll::-webkit-scrollbar {
+  display: none; /* Pour Chrome, Safari et Edge */
+}
+
+
+.gradient-bg {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item {
+  transition: all 0.2s ease;
+}
+
+.sidebar-item:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+}
+
+.sidebar-item.active {
+  background: rgba(239, 68, 68, 0.2);
+  border-left: 4px solid #ef4444;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.prefix-icon{
+    position: absolute; top: 50%; left: 1rem; transform: translateY(-50%); cursor: pointer;
+}
+
 
 
     /* Quadrillage CSS pur avec les couleurs exactes */
@@ -89,3 +165,87 @@
       background-size: 40px 40px, 40px 40px, 80px 80px, 80px 80px;
       background-position: 0 0, 0 0, 20px 20px, 20px 20px;
     }
+
+
+    .table-row {
+      transition: all 0.2s ease;
+    }
+    
+    .table-row:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateX(5px);
+    }
+    
+    .participant-card {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .participant-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .participant-card:hover::before {
+      left: 100%;
+    }
+    
+    .status-badge {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .status-badge::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    
+    /*Evennt edition*/
+
+    .form-section {
+      transition: all 0.3s ease;
+    }
+    
+    .form-section.collapsed {
+      max-height: 60px;
+      overflow: hidden;
+    }
+    
+    .form-section.expanded {
+      max-height: none;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .tab-button.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .image-preview {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23d1d5db"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 48px 48px;
+    }
+    

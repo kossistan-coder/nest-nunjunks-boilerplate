@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoreModule } from './core/core.module';
+import { NotificationModule } from './core/notifications/notification.module';
+import { WorkspaceModule } from './core/workspace/workspace.module';
+import { EventController } from './core/event/controllers/event.controller';
+import { EventModule } from './core/event/event.module';
+import { AdminController } from './core/admin/controllers/admin.controller';
+import { AdminModule } from './core/admin/admin.module';
 
 @Module({
-  imports: [CoreModule],
-  controllers: [AppController],
+  imports: [WorkspaceModule, NotificationModule, EventModule, AdminModule],
+  controllers: [AppController, EventController, AdminController],
   providers: [AppService],
 })
 export class AppModule {}

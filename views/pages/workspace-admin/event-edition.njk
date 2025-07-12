@@ -1,0 +1,130 @@
+{% extends "layouts/workspace-admin.njk" %}
+{% block content %}
+<section class="gradient-bg">
+    <div class="  min-h-screen text-white">
+        <!-- Header -->
+        <header class="bg-secondary/30 backdrop-blur-lg border-b border-white/10 p-3.5">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+              <div class="flex items-center">
+                <button class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <h1 class="ml-4 text-xl font-semibold text-white">Éditeur d'événement</h1>
+              </div>
+      
+              <div class="flex items-center space-x-4">
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Aperçu
+                </button>
+                <button class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                  Enregistrer comme brouillon
+                </button>
+                <button class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Publier l'événement
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+      
+        <div class="  container  pl-64 pr-10 mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-14 w-full">
+            <!-- Formulaire principal -->
+      
+                  <div class=" gradient-bg lg:col-span-3 stats-card shadow-xl rounded-xl ml-20 w-full">
+      
+                  </div>
+                  <!-- Sidebar -->
+                  <div class="col-span-1 w-full mx-20">
+                    <div class="space-y-6">
+                      <!-- Statut de publication -->
+                      <div class="gradient-bg rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-medium text-white mb-4">Statut de publication</h3>
+      
+                        <div class="space-y-4">
+                          <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Statut actuel</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                              Brouillon
+                            </span>
+                          </div>
+      
+                          <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Dernière modification</span>
+                            <span class="text-sm text-gray-500">Il y a 5 min</span>
+                          </div>
+      
+                          <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Créé le</span>
+                            <span class="text-sm text-gray-500">15 mars 2024</span>
+                          </div>
+                        </div>
+      
+                        <div class="mt-6 space-y-3">
+                          <button class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Prévisualiser
+                          </button>
+                          <button class="w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Publier maintenant
+                          </button>
+                        </div>
+                      </div>
+      
+                      <!-- Statistiques -->
+                      <div class="gradient-bg  rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-medium text-white mb-4">Statistiques</h3>
+      
+                        <div class="space-y-4">
+                          <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Vues</span>
+                            <span class="text-sm font-medium text-gray-900">1,234</span>
+                          </div>
+      
+                          <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Inscriptions</span>
+                            <span class="text-sm font-medium text-gray-900">89 / 300</span>
+                          </div>
+      
+                          <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Taux de conversion</span>
+                            <span class="text-sm font-medium text-gray-900">7.2%</span>
+                          </div>
+      
+                          <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 30%"></div>
+                          </div>
+                          <p class="text-xs text-gray-500">30% de la capacité atteinte</p>
+                        </div>
+                      </div>
+      
+                      <!-- Actions rapides -->
+                      <div class="gradient-bg rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-medium text-white mb-4">Actions rapides</h3>
+      
+                        <div class="space-y-3">
+                          <button class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Dupliquer l'événement
+                          </button>
+                          <button class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-accent rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Exporter les données
+                          </button>
+                          <button class="w-full px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-300 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Supprimer l'événement
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+      
+      
+          </div>
+        </div>
+      
+      </div>
+</section>
+
+  
+{% endblock %}

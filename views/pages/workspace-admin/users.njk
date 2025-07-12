@@ -1,0 +1,696 @@
+{% extends "layouts/workspace-admin.njk" %}
+{% block content %}
+  <!-- Main Content -->
+  <div class="ml-64 gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-secondary/30 backdrop-blur-lg border-b border-white/10 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-white">Gestion des Participants</h1>
+          <p class="text-gray-400">Gérez et suivez tous vos participants</p>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- Search -->
+          <div class="relative">
+            <input type="text" id="searchInput" placeholder="Rechercher un participant..." class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 pl-10 w-80 focus:outline-none focus:ring-2 focus:ring-accent">
+            <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+
+          <!-- Export -->
+          <button class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors" title="Exporter">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </button>
+
+          <!-- Filter -->
+          <button onclick="toggleFilters()" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors" title="Filtres">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+            </svg>
+          </button>
+
+          <!-- Add Participant Button -->
+          <button onclick="openParticipantModal()" class="bg-accent hover:bg-accent/80 px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <span>Ajouter Participant</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="p-6 border-b border-white/10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Total Participants</p>
+              <p class="text-2xl font-bold text-white">1,247</p>
+              <p class="text-success text-sm">+12% ce mois</p>
+            </div>
+            <div class="w-12 h-12 bg-success/20 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Participants Actifs</p>
+              <p class="text-2xl font-bold text-white">892</p>
+              <p class="text-success text-sm">+8% ce mois</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Nouveaux ce mois</p>
+              <p class="text-2xl font-bold text-white">156</p>
+              <p class="text-warning text-sm">+3% ce mois</p>
+            </div>
+            <div class="w-12 h-12 bg-warning/20 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Taux de Présence</p>
+              <p class="text-2xl font-bold text-white">87%</p>
+              <p class="text-success text-sm">+2% ce mois</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Panel -->
+    <div id="filtersPanel" class="hidden p-6 border-b border-white/10 bg-secondary/20">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Statut</label>
+          <select class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+            <option value="">Tous les statuts</option>
+            <option value="confirmed">Confirmé</option>
+            <option value="pending">En attente</option>
+            <option value="cancelled">Annulé</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Événement</label>
+          <select class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+            <option value="">Tous les événements</option>
+            <option value="team-building">Team Building</option>
+            <option value="conference">Conférence Tech</option>
+            <option value="workshop">Workshop Design</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Date d'inscription</label>
+          <input type="date" class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Type de billet</label>
+          <select class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+            <option value="">Tous les types</option>
+            <option value="vip">VIP</option>
+            <option value="standard">Standard</option>
+            <option value="gratuit">Gratuit</option>
+          </select>
+        </div>
+
+        <div class="flex items-end">
+          <button onclick="applyFilters()" class="w-full bg-accent hover:bg-accent/80 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            Appliquer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="p-6 border-b border-white/10">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <button onclick="showView('cards')" id="cardsViewBtn" class="bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+            </svg>
+            <span>Cartes</span>
+          </button>
+          <button onclick="showView('table')" id="tableViewBtn" class="bg-white/10 hover:bg-white/20 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+            </svg>
+            <span>Tableau</span>
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <select class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+            <option>Trier par nom</option>
+            <option>Trier par date d'inscription</option>
+            <option>Trier par événement</option>
+            <option>Trier par statut</option>
+          </select>
+
+          <div class="text-sm text-gray-400">
+            1,247 participants
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards View -->
+    <div id="cardsView" class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Participant Card 1 -->
+        <div class="participant-card glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center space-x-4 mb-4">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face" alt="Sarah Johnson" class="w-15 h-15 rounded-full">
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-success rounded-full border-2 border-white"></div>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-white">Sarah Johnson</h3>
+              <p class="text-sm text-gray-400">sarah.johnsonemail.com</p>
+            </div>
+            <div class="relative">
+              <button onclick="toggleParticipantMenu(1)" class="text-gray-400 hover:text-white p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
+                </svg>
+              </button>
+              <div id="menu-1" class="hidden absolute right-0 top-8 bg-secondary/90 backdrop-blur-lg rounded-lg shadow-lg border border-white/10 py-2 w-48 z-10">
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  </svg>
+                  <span>Modifier</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>Envoyer email</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2 text-red-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                  <span>Supprimer</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Statut</span>
+              <span class="status-badge bg-success/20 text-success text-xs px-2 py-1 rounded-full">Confirmé</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Événement</span>
+              <span class="text-sm text-white">Team Building Corporate</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Type de billet</span>
+              <span class="bg-purple-500/20 text-purple-400 text-xs px-2 py-1 rounded-full">VIP</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Inscription</span>
+              <span class="text-sm text-white">12 Mars 2024</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Téléphone</span>
+              <span class="text-sm text-white">+33 6 12 34 56 78</span>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <div class="flex items-center space-x-2">
+              <button class="flex-1 bg-accent hover:bg-accent/80 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                Contacter
+              </button>
+              <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">
+                Profil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Participant Card 2 -->
+        <div class="participant-card glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center space-x-4 mb-4">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face" alt="Michael Chen" class="w-15 h-15 rounded-full">
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-warning rounded-full border-2 border-white"></div>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-white">Michael Chen</h3>
+              <p class="text-sm text-gray-400">michael.chenemail.com</p>
+            </div>
+            <div class="relative">
+              <button onclick="toggleParticipantMenu(2)" class="text-gray-400 hover:text-white p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
+                </svg>
+              </button>
+              <div id="menu-2" class="hidden absolute right-0 top-8 bg-secondary/90 backdrop-blur-lg rounded-lg shadow-lg border border-white/10 py-2 w-48 z-10">
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  </svg>
+                  <span>Modifier</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>Envoyer email</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2 text-red-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                  <span>Supprimer</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Statut</span>
+              <span class="status-badge bg-warning/20 text-warning text-xs px-2 py-1 rounded-full">En attente</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Événement</span>
+              <span class="text-sm text-white">Conférence Tech 2024</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Type de billet</span>
+              <span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">Standard</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Inscription</span>
+              <span class="text-sm text-white">14 Mars 2024</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Téléphone</span>
+              <span class="text-sm text-white">+33 6 98 76 54 32</span>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <div class="flex items-center space-x-2">
+              <button class="flex-1 bg-accent hover:bg-accent/80 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                Contacter
+              </button>
+              <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">
+                Profil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Participant Card 3 -->
+        <div class="participant-card glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center space-x-4 mb-4">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face" alt="Emma Wilson" class="w-15 h-15 rounded-full">
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-500 rounded-full border-2 border-white"></div>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-white">Emma Wilson</h3>
+              <p class="text-sm text-gray-400">emma.wilsonemail.com</p>
+            </div>
+            <div class="relative">
+              <button onclick="toggleParticipantMenu(3)" class="text-gray-400 hover:text-white p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
+                </svg>
+              </button>
+              <div id="menu-3" class="hidden absolute right-0 top-8 bg-secondary/90 backdrop-blur-lg rounded-lg shadow-lg border border-white/10 py-2 w-48 z-10">
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  </svg>
+                  <span>Modifier</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>Envoyer email</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2 text-red-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                  <span>Supprimer</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Statut</span>
+              <span class="status-badge bg-gray-500/20 text-gray-400 text-xs px-2 py-1 rounded-full">Annulé</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Événement</span>
+              <span class="text-sm text-white">Workshop Design Thinking</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Type de billet</span>
+              <span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full">Gratuit</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Inscription</span>
+              <span class="text-sm text-white">08 Mars 2024</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Téléphone</span>
+              <span class="text-sm text-white">+33 6 45 67 89 01</span>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <div class="flex items-center space-x-2">
+              <button class="flex-1 bg-gray-600 hover:bg-gray-500 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                Réactiver
+              </button>
+              <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">
+                Profil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Participant Card 4 -->
+        <div class="participant-card glass-effect rounded-xl p-6 card-hover">
+          <div class="flex items-center space-x-4 mb-4">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face" alt="David Rodriguez" class="w-15 h-15 rounded-full">
+              <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-success rounded-full border-2 border-white"></div>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-white">David Rodriguez</h3>
+              <p class="text-sm text-gray-400">david.rodriguezemail.com</p>
+            </div>
+            <div class="relative">
+              <button onclick="toggleParticipantMenu(4)" class="text-gray-400 hover:text-white p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01"></path>
+                </svg>
+              </button>
+              <div id="menu-4" class="hidden absolute right-0 top-8 bg-secondary/90 backdrop-blur-lg rounded-lg shadow-lg border border-white/10 py-2 w-48 z-10">
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                  </svg>
+                  <span>Modifier</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>Envoyer email</span>
+                </button>
+                <button class="w-full text-left px-4 py-2 text-sm hover:bg-white/10 flex items-center space-x-2 text-red-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                  <span>Supprimer</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Statut</span>
+              <span class="status-badge bg-success/20 text-success text-xs px-2 py-1 rounded-full">Confirmé</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Événement</span>
+              <span class="text-sm text-white">Soirée Networking</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Type de billet</span>
+              <span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">Standard</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Inscription</span>
+              <span class="text-sm text-white">16 Mars 2024</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-400">Téléphone</span>
+              <span class="text-sm text-white">+33 6 23 45 67 89</span>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <div class="flex items-center space-x-2">
+              <button class="flex-1 bg-accent hover:bg-accent/80 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                Contacter
+              </button>
+              <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">
+                Profil
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between mt-8">
+        <p class="text-gray-400 text-sm">Affichage de 1 à 12 sur 1,247 participants</p>
+        <div class="flex items-center space-x-2">
+          <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">Précédent</button>
+          <button class="bg-accent text-white px-3 py-2 rounded-lg text-sm">1</button>
+          <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">2</button>
+          <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">3</button>
+          <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">...</button>
+          <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">104</button>
+          <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">Suivant</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div id="tableView" class="hidden p-6">
+      <div class="glass-effect rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-white/5">
+              <tr>
+                <th class="text-left p-4 font-medium text-gray-300">
+                  <input type="checkbox" class="rounded border-white/20 bg-white/10 text-accent focus:ring-accent">
+                </th>
+                <th class="text-left p-4 font-medium text-gray-300">Participant</th>
+                <th class="text-left p-4 font-medium text-gray-300">Événement</th>
+                <th class="text-left p-4 font-medium text-gray-300">Statut</th>
+                <th class="text-left p-4 font-medium text-gray-300">Type de billet</th>
+                <th class="text-left p-4 font-medium text-gray-300">Date d'inscription</th>
+                <th class="text-left p-4 font-medium text-gray-300">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-row border-b border-white/10">
+                <td class="p-4">
+                  <input type="checkbox" class="rounded border-white/20 bg-white/10 text-accent focus:ring-accent">
+                </td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face" alt="Sarah Johnson" class="w-10 h-10 rounded-full">
+                    <div>
+                      <p class="font-medium text-white">Sarah Johnson</p>
+                      <p class="text-sm text-gray-400">sarah.johnsonemail.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4 text-white">Team Building Corporate</td>
+                <td class="p-4">
+                  <span class="bg-success/20 text-success text-xs px-2 py-1 rounded-full">Confirmé</span>
+                </td>
+                <td class="p-4">
+                  <span class="bg-purple-500/20 text-purple-400 text-xs px-2 py-1 rounded-full">VIP</span>
+                </td>
+                <td class="p-4 text-gray-300">12 Mars 2024</td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-2">
+                    <button class="bg-accent hover:bg-accent/80 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Contacter
+                    </button>
+                    <button class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Profil
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="table-row border-b border-white/10">
+                <td class="p-4">
+                  <input type="checkbox" class="rounded border-white/20 bg-white/10 text-accent focus:ring-accent">
+                </td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Michael Chen" class="w-10 h-10 rounded-full">
+                    <div>
+                      <p class="font-medium text-white">Michael Chen</p>
+                      <p class="text-sm text-gray-400">michael.chenemail.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4 text-white">Conférence Tech 2024</td>
+                <td class="p-4">
+                  <span class="bg-warning/20 text-warning text-xs px-2 py-1 rounded-full">En attente</span>
+                </td>
+                <td class="p-4">
+                  <span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">Standard</span>
+                </td>
+                <td class="p-4 text-gray-300">14 Mars 2024</td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-2">
+                    <button class="bg-accent hover:bg-accent/80 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Contacter
+                    </button>
+                    <button class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Profil
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="table-row border-b border-white/10">
+                <td class="p-4">
+                  <input type="checkbox" class="rounded border-white/20 bg-white/10 text-accent focus:ring-accent">
+                </td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="Emma Wilson" class="w-10 h-10 rounded-full">
+                    <div>
+                      <p class="font-medium text-white">Emma Wilson</p>
+                      <p class="text-sm text-gray-400">emma.wilsonemail.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4 text-white">Workshop Design Thinking</td>
+                <td class="p-4">
+                  <span class="bg-gray-500/20 text-gray-400 text-xs px-2 py-1 rounded-full">Annulé</span>
+                </td>
+                <td class="p-4">
+                  <span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full">Gratuit</span>
+                </td>
+                <td class="p-4 text-gray-300">08 Mars 2024</td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-2">
+                    <button class="bg-gray-600 hover:bg-gray-500 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Réactiver
+                    </button>
+                    <button class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Profil
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="table-row border-b border-white/10">
+                <td class="p-4">
+                  <input type="checkbox" class="rounded border-white/20 bg-white/10 text-accent focus:ring-accent">
+                </td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="David Rodriguez" class="w-10 h-10 rounded-full">
+                    <div>
+                      <p class="font-medium text-white">David Rodriguez</p>
+                      <p class="text-sm text-gray-400">david.rodriguezemail.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4 text-white">Soirée Networking</td>
+                <td class="p-4">
+                  <span class="bg-success/20 text-success text-xs px-2 py-1 rounded-full">Confirmé</span>
+                </td>
+                <td class="p-4">
+                  <span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">Standard</span>
+                </td>
+                <td class="p-4 text-gray-300">16 Mars 2024</td>
+                <td class="p-4">
+                  <div class="flex items-center space-x-2">
+                    <button class="bg-accent hover:bg-accent/80 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Contacter
+                    </button>
+                    <button class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg text-xs transition-colors">
+                      Profil
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Table Pagination -->
+        <div class="flex items-center justify-between p-4 border-t border-white/10">
+          <p class="text-gray-400 text-sm">Affichage de 1 à 10 sur 1,247 participants</p>
+          <div class="flex items-center space-x-2">
+            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">Précédent</button>
+            <button class="bg-accent text-white px-3 py-2 rounded-lg text-sm">1</button>
+            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">2</button>
+            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">3</button>
+            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">...</button>
+            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">125</button>
+            <button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm transition-colors">Suivant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
