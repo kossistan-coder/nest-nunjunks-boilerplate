@@ -7,9 +7,16 @@ import { EventController } from './core/event/controllers/event.controller';
 import { EventModule } from './core/event/event.module';
 import { AdminController } from './core/admin/controllers/admin.controller';
 import { AdminModule } from './core/admin/admin.module';
+import { AuthModule } from './core/auth/auth.module';
 
 @Module({
-  imports: [WorkspaceModule, NotificationModule, EventModule, AdminModule],
+  imports: [
+    WorkspaceModule,
+    NotificationModule,
+    EventModule,
+    AdminModule,
+    AuthModule,
+  ],
   controllers: [AppController, EventController, AdminController],
   providers: [AppService],
 })
