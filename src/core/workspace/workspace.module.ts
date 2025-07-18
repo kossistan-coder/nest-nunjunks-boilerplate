@@ -3,8 +3,7 @@ import { UserModule } from '../user/user.module';
 import { RouterModule } from '@nestjs/core';
 import { WorkspaceController } from './controllers/workspace.controller';
 import { EventModule } from '../event/event.module';
-import { AdminModule } from '../admin/admin.module';
-
+import { AccessControlModule } from '../access-control/access-control.module';
 @Module({
   imports: [
     RouterModule.register([
@@ -18,12 +17,12 @@ import { AdminModule } from '../admin/admin.module';
       },
       {
         path: 'workspace',
-        module: AdminModule,
+        module: AccessControlModule,
       },
     ]),
     UserModule,
     EventModule,
-    AdminModule,
+    AccessControlModule,
   ],
   controllers: [WorkspaceController],
 })
