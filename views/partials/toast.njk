@@ -1,0 +1,124 @@
+
+{% set flash = toast %}
+
+    <!-- Demo Controls -->
+    <!-- <div class="max-w-md mx-auto space-y-4">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Toast Notifications Demo</h2>
+        <button onclick="showToast('success')"
+            class="w-full px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">
+            Show Success Toast
+        </button>
+        <button onclick="showToast('error')" class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+            Show Error Toast
+        </button>
+        <button onclick="showToast('info')"
+            class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            Show Info Toast
+        </button>
+        <button onclick="showToast('warning')"
+            class="w-full px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
+            Show Warning Toast
+        </button>
+    </div> -->
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container" style="position: absolute; right: 10px ; top : 20px"></div>
+
+    <script>
+        const toastConfigs = {
+            success: {
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>`,
+                title: 'Opération réussie',
+                message: `{{flash.message}}`,
+                bgColor: 'bg-emerald-500/10',
+                borderColor: 'border-emerald-500/20',
+                textColor: 'text-emerald-500',
+                progressColor: 'bg-emerald-500'
+            },
+            error: {
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>`,
+                title: 'Opération échouée',
+                message: `{{flash.message}}`,
+                bgColor: 'bg-red-500/10',
+                borderColor: 'border-red-500/20',
+                textColor: 'text-red-500',
+                progressColor: 'bg-red-500'
+            },
+            info: {
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>`,
+                title: 'Information',
+                message: 'Mise à jour des informations en cours...',
+                bgColor: 'bg-blue-500/10',
+                borderColor: 'border-blue-500/20',
+                textColor: 'text-blue-500',
+                progressColor: 'bg-blue-500'
+            },
+            warning: {
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>`,
+                title: 'Attention',
+                message: 'Veuillez vérifier les informations saisies.',
+                bgColor: 'bg-amber-500/10',
+                borderColor: 'border-amber-500/20',
+                textColor: 'text-amber-500',
+                progressColor: 'bg-amber-500'
+            }
+        };
+
+        function createToast(type , message) {
+            const config = toastConfigs[type];
+            const toast = document.createElement('div');
+            toast.className = `toast-enter relative w-80 p-4 rounded-lg border ${config.borderColor} ${config.bgColor} glass-effect`;
+
+            toast.innerHTML = `
+                <div class="flex gap-3">
+                    <div class="${config.textColor}">
+                        ${config.icon}
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-900 dark:text-white">
+                            ${config.title}
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            ${message}
+                        </p>
+                    </div>
+                    <button onclick="closeToast(this.parentElement.parentElement)" class="text-gray-400 hover:text-gray-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 h-1 overflow-hidden rounded-b-lg">
+                    <div class="progress-bar h-full ${config.progressColor}"></div>
+                </div>
+            `;
+
+            return toast;
+        }
+
+        function showToast(type , message) {
+            const toast = createToast(type , message);
+            document.getElementById('toastContainer').appendChild(toast);
+
+            // Remove toast after animation
+            setTimeout(() => {
+                closeToast(toast);
+            }, 5000);
+        }
+
+        function closeToast(toast) {
+            toast.classList.remove('toast-enter');
+            toast.classList.add('toast-exit');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }
+    </script>

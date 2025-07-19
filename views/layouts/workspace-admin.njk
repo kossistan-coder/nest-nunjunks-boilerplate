@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+  {% include "partials/toast.njk" %}
 <main >
     <div class="fixed text-white left-0 top-0 h-full w-64 gradient-bg  bg-secondary/50 backdrop-blur-lg border-r border-white/10 z-50">
       <!-- Logo -->
@@ -81,7 +81,17 @@
         {% block content %}{% endblock %}
     </article>
   </main>
+  <script src="/js/alpine.js"></script>
+  <script src="/js/flowbite.min.js"></script>
+
+  {% if toast and toast.message | length > 0 %}
+  {% for message in toast.message %}
+  <script>
+      showToast(`{{toast.type}}`, `{{message}}`)
+  </script>
+  {% endfor %}
   
+  {% endif %}
 
 </body>
 
