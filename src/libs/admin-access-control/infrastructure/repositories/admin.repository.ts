@@ -1,4 +1,3 @@
-import { Admin } from '../models/admin.model';
 import { MAIN_DATABASE_CONNECTION_NAME } from 'src/shared/constants/databases';
 import { InjectModel } from '@nestjs/mongoose';
 import {
@@ -15,6 +14,7 @@ import {
   SortQuery,
 } from 'src/libs/databases/providers/mongo.provider';
 import { Injectable } from '@nestjs/common';
+import { Admin } from '../models/admin.model';
 
 @Injectable()
 export class AdminRepository extends DatabaseRepository<Admin> {
@@ -46,8 +46,8 @@ export class AdminRepository extends DatabaseRepository<Admin> {
     skip?: number,
     sort?: SortQuery<Admin>,
     select?: SelectQuery<Admin>,
-  ): Promise<LeanedDocument<Admin> | null> {
-    return this.get(filters, limit, skip, sort, select);
+  ): Promise<LeanedDocument<Admin>> {
+    return await this.get(filters, limit, skip, sort, select);
   }
 
   async getOne<Admin>(

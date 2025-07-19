@@ -74,7 +74,7 @@ export class DatabaseRepository<T extends Document> {
     select: SelectQuery<T> = null,
   ): Promise<LeanedDocument<T> | null> {
     //@ts-expect-error nestjs
-    return this.model
+    return await this.model
       .find(filters)
       .sort(sort)
       .limit(limit)

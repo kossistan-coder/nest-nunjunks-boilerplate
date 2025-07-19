@@ -21,6 +21,7 @@ export class CreateAdminDto {
   password: string;
 
   @IsBoolean()
+  @IsOptional()
   active: boolean;
 
   @IsArray()
