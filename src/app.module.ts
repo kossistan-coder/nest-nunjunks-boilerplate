@@ -7,25 +7,24 @@ import { EventController } from './core/event/controllers/event.controller';
 import { EventModule } from './core/event/event.module';
 import { AuthModule } from './core/auth/auth.module';
 
-import { InfrastructureModule } from './libs/admin-access-control/infrastructure/infrastructure.module';
 import { AccessControlController } from './core/access-control/controllers/access-control.controller';
 import { AccessControlModule } from './core/access-control/access-control.module';
-import { DefaultService } from './libs/admin-access-control/domain/services/default.service';
 import { LibAdminAccessControlDomainModule } from './libs/admin-access-control/domain/lib-admin-access-control-domain.module';
 import { LibAdminAccessControlModule } from './libs/admin-access-control/lib-admin-access-control.module';
+import { LibEventModule } from './libs/events/lib-event.module';
 
 @Module({
   imports: [
     WorkspaceModule,
     NotificationModule,
-    InfrastructureModule,
     EventModule,
     AuthModule,
     AccessControlModule,
+    LibEventModule,
     LibAdminAccessControlModule,
     LibAdminAccessControlDomainModule,
   ],
   controllers: [AppController, EventController, AccessControlController],
-  providers: [AppService, DefaultService],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AdminRepository } from '../repositories/admin.repository';
+import { AdminRepository } from '../../infrastructure/repositories/admin.repository';
 import { CreateAdminDto } from '../../../../core/access-control/dtos/admin/create-admin.dto';
 import { UpdateAdminDto } from '../../../../core/access-control/dtos/admin/update-admin.dto';
 import * as bcrypt from 'bcrypt';
-import { Admin } from '../models/admin.model';
+import { Admin } from '../../infrastructure/models/admin.model';
 
 @Injectable()
 export class AdminService {

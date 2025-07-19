@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { CreateAdminDto } from '../dtos/admin/create-admin.dto';
 import { UpdateAdminDto } from '../dtos/admin/update-admin.dto';
-import { AdminService } from 'src/libs/admin-access-control/infrastructure/services/admin.service';
+import { AdminService } from 'src/libs/admin-access-control/domain/services/admin.service';
 
 @Controller('access-control')
 export class AccessControlController {

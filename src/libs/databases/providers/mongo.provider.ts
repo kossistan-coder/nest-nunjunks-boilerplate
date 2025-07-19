@@ -31,7 +31,7 @@ export class DatabaseRepository<T extends Document> {
   async create<T>(
     doc: Partial<T> | Partial<T>[],
     options?: CreateOptions,
-  ): Promise<LeanedDocument<T> | LeanedDocument<T>[]> {
+  ): Promise<LeanedDocument<T>> {
     const isArray = Array.isArray(doc);
     Object.assign(doc, { createdAt: new Date(), updatedAt: new Date() });
 
@@ -40,7 +40,7 @@ export class DatabaseRepository<T extends Document> {
     const leanedDocs = docs.map((doc) => doc.toObject());
 
     //@ts-expect-error nestjs
-    return isArray ? leanedDocs : leanedDocs[0];
+    return isArray ? leanedDocs[0] : leanedDocs;
   }
 
   update(

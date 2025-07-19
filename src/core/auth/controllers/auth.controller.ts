@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateAdminDto } from 'src/core/access-control/dtos/admin/create-admin.dto';
-import { AdminService } from 'src/libs/admin-access-control/infrastructure/services/admin.service';
+import { AdminService } from 'src/libs/admin-access-control/domain/services/admin.service';
 
 @Controller('auth')
 export class AuthController {

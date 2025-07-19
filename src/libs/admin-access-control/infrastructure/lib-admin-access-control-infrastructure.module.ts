@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../../databases/database.module';
-import { UserRepository } from './repositories/user.repository';
 import { AdminRepository } from './repositories/admin.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './models/user.model';
@@ -10,10 +9,7 @@ import { PermissionRepositry } from './repositories/permission.repository';
 import { RoleRepository } from './repositories/role.repository';
 import { Permission, PermissionSchema } from './models/permission.model';
 import { Role, RoleSchema } from './models/role.model';
-import { UserService } from 'src/core/user/services/user.service';
-import { AdminService } from './services/admin.service';
-import { RoleService } from './services/role.service';
-import { PermissionService } from './services/permission.service';
+import { DefaultService } from './services/default.service';
 
 @Module({
   imports: [
@@ -42,23 +38,17 @@ import { PermissionService } from './services/permission.service';
   ],
   providers: [
     //Repositories
-    UserRepository,
     AdminRepository,
     PermissionRepositry,
     RoleRepository,
-
-    //Services
-    UserService,
-    AdminService,
-    PermissionService,
-    RoleService,
+    DefaultService,
   ],
   exports: [
-    UserService,
-    AdminService,
-    PermissionService,
-    RoleService,
+    AdminRepository,
+    PermissionRepositry,
+    RoleRepository,
+    DefaultService,
     MongooseModule,
   ],
 })
-export class InfrastructureModule {}
+export class LibAdminAccessInfrastructureModule {}

@@ -1,6 +1,6 @@
 import { CreatePermissionDto } from '../../../../core/access-control/dtos/permission/create-permission.dto';
 import { Injectable } from '@nestjs/common';
-import { PermissionRepositry } from '../repositories/permission.repository';
+import { PermissionRepositry } from '../../infrastructure/repositories/permission.repository';
 import { UpdateAdminDto } from '../../../../core/access-control/dtos/admin/update-admin.dto';
 
 @Injectable()

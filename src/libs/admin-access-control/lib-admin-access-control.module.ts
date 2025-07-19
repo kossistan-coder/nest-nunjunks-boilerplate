@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
-import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { LibAdminAccessControlDomainModule } from './domain/lib-admin-access-control-domain.module';
+import { LibAdminAccessInfrastructureModule } from './infrastructure/lib-admin-access-control-infrastructure.module';
 
 @Module({
-  imports: [LibAdminAccessControlDomainModule, InfrastructureModule],
-  exports: [InfrastructureModule],
+  imports: [
+    LibAdminAccessControlDomainModule,
+    LibAdminAccessInfrastructureModule,
+  ],
+  exports: [
+    LibAdminAccessInfrastructureModule,
+    LibAdminAccessControlDomainModule,
+  ],
 })
 export class LibAdminAccessControlModule {}

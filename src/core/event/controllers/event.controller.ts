@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Get, Render, Req, Res } from '@nestjs/common';
+import { EventService } from 'src/libs/events/domain/services/event.service';
 
 @Controller('event')
 export class EventController {
-  constructor() {}
+  constructor(private readonly eventService: EventService) {}
 
   @Get('all')
   @Render('pages/workspace-admin/events')

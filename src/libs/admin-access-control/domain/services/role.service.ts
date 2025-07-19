@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RoleRepository } from '../repositories/role.repository';
+import { RoleRepository } from '../../infrastructure/repositories/role.repository';
 import { CreateRoleDto } from '../../../../core/access-control/dtos/role/create-role.dto';
 import { UpdateRoleDto } from '../../../../core/access-control/dtos/role/update-role.dto';
 
